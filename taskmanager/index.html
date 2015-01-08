@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Task Manager</title>
+  <link rel="stylesheet" href="./css/main.css">
+  <script src="./js/angular.min.js"></script>
+  <script src="./js/main.js"></script>
+  <script src="./js/api-service.js"></script>
+</head>
+<body ng-app="App" ng-controller="MainController">
+  <header>
+    <h2>Task Manager</h2>
+  </header>
+  <section class="list-container">
+    <div class="list" ng-repeat="list in lists">
+      <div class="list-title">{{ list.name }}</div>
+      <div class="task-container">
+        <div class="task"  ng-repeat="task in list.task">
+          <div class="task-title">{{ task.name }}</div>
+          <div class="task-detail">
+            {{ task.detail }}
+          </div>
+          <div class="task-tools">
+            <span ng-click="showModalEdit(task)">edit</span> / 
+            <span ng-click="deleteTask(task)">delete</span>
+          </div>
+        </div>
+        <div class="task button-add-task" ng-click="showModalNew(list)">Add a task...</div>
+      </div>
+      <div class="list-delete" ng-click="deleteList(list)">×</div>
+    </div>
+    <div class="list list-add">
+      <form ng-submit="addList()">
+        <input type="text" required placeholder="list title" ng-model="newListName">
+        <button class="list-title"> Add a list... </button>
+      </form>
+    </div>
+  </section>
+  <section class="modal" ng-class="modalFlag">
+    <div class="overray"></div>
+    <div class="form form-new" ng-class="modalFormNew">
+      <div class="modal-box">
+        <div class="modal-title">Add a task</div>
+        <form ng-submit="addTask()">
+          <p><input type="text" required placeholder="task title" ng-model="modalTaskNew.name"><p>
+          <p><textarea ng-model="modalTaskNew.detail"></textarea></p>
+          <p class="text-right"><input type="submit" value="SUBMIT"></p>
+        </form>
+        <div class="close" ng-click="modalFlag=''">×</div>
+      </div>      
+    </div>
+    <div class="form form-edit" ng-class="modalFormEdit">
+      <div class="modal-box">
+        <div class="modal-title">Edit a task</div>
+        <form ng-submit="editTask()">
+          <p><input type="text" required placeholder="task title" ng-model="modalTaskEdit.name"><p>
+          <p><textarea ng-model="modalTaskEdit.detail"></textarea></p>
+          <p class="text-right"><input type="submit" value="SUBMIT"></p>
+        </form>
+        <div class="close" ng-click="modalFlag=''">×</div>
+      </div>      
+    </div>
+  </section>
+</body>
+</html>
